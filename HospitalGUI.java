@@ -5,7 +5,12 @@
  */
 package AppPackage;
 
-
+import java.sql.DriverManager;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -196,6 +201,7 @@ public class HospitalGUI extends javax.swing.JFrame {
         lastName.setText("");
         sampleId.setText("");        
         dept.setText("");
+        emailAddress.setText("");
     }//GEN-LAST:event_resetActionPerformed
 
     private void signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutActionPerformed
@@ -219,6 +225,61 @@ public class HospitalGUI extends javax.swing.JFrame {
         String department = dept.getText();
         String sample = sampleId.getText();
         String emailAdress = emailAddress.getText();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+	} catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Did you forget to include the JAR file in the project?");
+	}
+        //to establish a database connection we need several pieces of information
+        String databaseURI = "jdbc:mysql://zenit.senecac.on.ca/bif724_161a12";
+        
+        //queries in Java
+        String insertQuery1 = "INSERT INTO client_id VALUES ('', first, last, last_name, email, department)";
+        String insertQuery2 = "INSERT INTO main_table VALUES ('', '', '', '', '', '')";
+        String insertQuery3 = "INSERT INTO barcode_id VALUES ('')";
+        
+        //Declare references for the objects we're going to use:
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet records = null;
+        
+        //Instantiate the database connection
+        String username = "bif724_161a12";
+        String password = "erZJ5526";
+	boolean connected = false;
+	System.out.println("Attempting to connect to database: " + databaseURI + " with username: " + username + " password: " + password);
+	try {
+            conn = DriverManager.getConnection(databaseURI, username, password);
+            stmt = conn.createStatement();
+            connected = true;
+	} catch (SQLException e) {
+            e.printStackTrace();
+            connected = false;
+	}
+	if(connected == true){	
+            //another example: insert a record
+            System.out.println("Inserting a record into the table");
+            try {
+		//NOTE: we're using executeUpdate! to modify the table
+		stmt.executeUpdate(insertQuery1);
+		//use the same loop to display the updated table
+		while(records.next()){
+                    int id = records.getInt("user_id");
+                    String firstname = records.getString("first_name");
+                    String lastname = records.getString("last_name");
+                    String email = records.getString("email");
+                    String departmentRecord = records.getString("department");
+                    System.out.println("user ID: " + id + " firstname: " + firstname + " lastname: "+ lastname + " email: " + email + " department: " + departmentRecord);
+		}
+                //Dialog confirmation box
+                JOptionPane.showMessageDialog(jDialog1,
+                "Information has been submitted. Email has been sent as confirmation.");
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_submitActionPerformed
 
     private void emailAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailAddressActionPerformed
@@ -256,7 +317,7 @@ public class HospitalGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HospitalGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
