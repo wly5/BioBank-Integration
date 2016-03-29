@@ -271,9 +271,9 @@ public class HospitalGUI extends javax.swing.JFrame {
                     int id = records.getInt("user_id");
                     String firstname = records.getString("first_name");
                     String lastname = records.getString("last_name");
-                    String email = records.getString("emailAdress");
+                    String email = records.getString("email");
                     String departmentRecord = records.getString("department");
-                    System.out.println(" firstname: " + first + " lastname: "+ last + " email: " + emailAdress + " department: " + department);
+                    System.out.println("user id: " + id + " firstname: " + firstname + " lastname: "+ lastname + " email: " + email + " department: " + departmentRecord);
 		}
                 //Dialog confirmation box
                 JOptionPane.showMessageDialog(jDialog1,
