@@ -317,19 +317,21 @@ public class HospitalGUI extends javax.swing.JFrame {
             try {
                 PreparedStatement pdt = conn.prepareStatement("INSERT INTO client_id(user_id, first_name, last_name, email, department) VALUES(?,?,?,?,?)");
                 PreparedStatement pdt2 = conn.prepareStatement("INSERT INTO barcode_id (barcode_id) VALUES (?)");
-                //PreparedStatement pdt3 = conn.prepareStatement("INSERT INTO main_table (sample_out) VALUES (?)");
+                PreparedStatement pdt3 = conn.prepareStatement("INSERT INTO main_table (sample_out, user_id, barcode_id) VALUES (?,?,?)");
                 pdt.setString(1, jTextField1.getText());
                 pdt.setString(2, firstName.getText());
                 pdt.setString(3, lastName.getText());
                 pdt.setString(4, emailAddress.getText());
                 pdt.setString(5, dept.getText());
                 pdt2.setString(1, sampleId.getText());
-                //pdt3.setBoolean(1, signOut.isSelected());
+                pdt3.setBoolean(1, signOut.isSelected());
+                pdt3.setString(2, jTextField1.getText());
+                pdt3.setString(3, sampleId.getText());
                 
 		//NOTE: we're using executeUpdate! to modify the table
 		pdt.executeUpdate();
                 pdt2.executeUpdate();
-                //pdt3.executeUpdate();
+                pdt3.executeUpdate();
                 //Dialog confirmation string
                 int rowsInserted1 = pdt.executeUpdate();
                 if (rowsInserted1 > 0){
@@ -339,10 +341,10 @@ public class HospitalGUI extends javax.swing.JFrame {
                 if (rowsInserted2 > 0){
                     System.out.println("Information 2 has been submitted. Email has been sent as confirmation.");
                 }
-                //int rowsInserted3 = pdt3.executeUpdate();
-                //if (rowsInserted3 > 0){
-                //    System.out.println("Information 3 has been submitted. Email has been sent as confirmation.");
-                //}
+                int rowsInserted3 = pdt3.executeUpdate();
+                if (rowsInserted3 > 0){
+                    System.out.println("Information 3 has been submitted. Email has been sent as confirmation.");
+                }
                 
             } catch (SQLException e) {
 		e.printStackTrace();
