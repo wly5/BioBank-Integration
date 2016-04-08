@@ -264,7 +264,7 @@ public class HospitalGUI extends javax.swing.JFrame {
         String samplepattern1 = "[^a-zA-Z0-9]";
         Pattern p = Pattern.compile(samplepattern1);
         Matcher n = p.matcher(sample);
-        if (m.find()) {
+        if (n.find()) {
             JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
         }
 
