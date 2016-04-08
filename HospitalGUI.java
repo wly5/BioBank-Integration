@@ -249,45 +249,45 @@ public class HospitalGUI extends javax.swing.JFrame {
         String samplepattern = "[^a-zA-Z0-9]";
         Pattern r = Pattern.compile(samplepattern);
         Matcher m = r.matcher(userID);
-        if (m.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
-        }
+        //if (m.find()) {
+        //    JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
+        //}
         
         String first = firstName.getText();
         //first name validation
         String samplePatternName = "[^a-zA-Z]";
         Pattern regex = Pattern.compile(samplePatternName);
         Matcher regexMatch = regex.matcher(first);
-        if (regexMatch.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
-        }
+        //if (regexMatch.find()) {
+        //    JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
+        //}
         
         String last = lastName.getText();
         //last name validation
         String samplePatternNameLast = "[^a-zA-Z]";
         Pattern regex1 = Pattern.compile(samplePatternNameLast);
-        Matcher regexMatch1 = regex1.matcher(first);
-        if (regexMatch1.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
-        }
+        Matcher regexMatch1 = regex1.matcher(last);
+        //if (regexMatch1.find()) {
+        //    JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
+        //}
         
         String department = dept.getText();
         //department validation
         String samplePatternNameDept = "[^a-zA-Z]";
         Pattern regex2 = Pattern.compile(samplePatternNameDept);
         Matcher regexMatch2 = regex2.matcher(department);
-        if (regexMatch2.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
-        }
+        //if (regexMatch2.find()) {
+        //    JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
+        //}
         
         String sample = sampleId.getText();
         //sampleID validation
         String samplepattern1 = "[^a-zA-Z0-9]";
         Pattern p = Pattern.compile(samplepattern1);
         Matcher n = p.matcher(sample);
-        if (n.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
-        }
+        //if (n.find()) {
+        //    JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
+        //}
 
         String emailAdress = emailAddress.getText();
         try {
@@ -332,22 +332,25 @@ public class HospitalGUI extends javax.swing.JFrame {
             e.printStackTrace();
             connected = false;
 	}
-	if(connected == true){
+	if (m.find() || regexMatch.find() || regexMatch1.find() || regexMatch2.find() || n.find()) {
+            JOptionPane.showMessageDialog(null, "Error. Please double check that you entered the information correctly.");
+        } else {
+            if(connected == true){
             //another example: insert a record
             System.out.println("Inserting a record into the table(s)");
             try {
                 PreparedStatement pdt = conn.prepareStatement("INSERT INTO client_id(user_id, first_name, last_name, email, department) VALUES(?,?,?,?,?)");
                 PreparedStatement pdt2 = conn.prepareStatement("INSERT INTO barcode_id (barcode_id) VALUES (?)");
                 PreparedStatement pdt3 = conn.prepareStatement("INSERT INTO main_table (sample_out, user_id, barcode_id) VALUES (?,?,?)");
-                pdt.setString(1, jTextField1.getText());
-                pdt.setString(2, firstName.getText());
-                pdt.setString(3, lastName.getText());
-                pdt.setString(4, emailAddress.getText());
-                pdt.setString(5, dept.getText());
-                pdt2.setString(1, sampleId.getText());
+                pdt.setString(1, userID);
+                pdt.setString(2, first);
+                pdt.setString(3, last);
+                pdt.setString(4, emailAdress);
+                pdt.setString(5, department);
+                pdt2.setString(1, sample);
                 pdt3.setBoolean(1, signOut.isSelected());
-                pdt3.setString(2, jTextField1.getText());
-                pdt3.setString(3, sampleId.getText());
+                pdt3.setString(2, userID);
+                pdt3.setString(3, sample);
                 
 		//NOTE: we're using executeUpdate! to modify the table
 		pdt.executeUpdate();
@@ -366,15 +369,15 @@ public class HospitalGUI extends javax.swing.JFrame {
                 if (rowsInserted3 > 0){
                     System.out.println("Information 3 has been submitted. Email has been sent as confirmation.");
                 }
-                
             } catch (SQLException e) {
 		e.printStackTrace();
             }
-        }
+            }
         try {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(HospitalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
     }//GEN-LAST:event_submitActionPerformed
 
