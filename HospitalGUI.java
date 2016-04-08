@@ -255,29 +255,29 @@ public class HospitalGUI extends javax.swing.JFrame {
         
         String first = firstName.getText();
         //first name validation
-        String samplePatternName = "[^a-ZA-Z]";
+        String samplePatternName = "[^a-zA-Z]";
         Pattern regex = Pattern.compile(samplePatternName);
         Matcher regexMatch = regex.matcher(first);
         if (regexMatch.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case haracters only");
+            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
         }
         
         String last = lastName.getText();
         //last name validation
-        String samplePatternNameLast = "[^a-ZA-Z]";
+        String samplePatternNameLast = "[^a-zA-Z]";
         Pattern regex1 = Pattern.compile(samplePatternNameLast);
         Matcher regexMatch1 = regex1.matcher(first);
         if (regexMatch1.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case haracters only");
+            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
         }
         
         String department = dept.getText();
         //department validation
-        String samplePatternNameDept = "[^a-ZA-Z]";
+        String samplePatternNameDept = "[^a-zA-Z]";
         Pattern regex2 = Pattern.compile(samplePatternNameDept);
         Matcher regexMatch2 = regex2.matcher(department);
         if (regexMatch2.find()) {
-            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case haracters only");
+            JOptionPane.showMessageDialog(null, "Please enter upper case or lower case characters only");
         }
         
         String sample = sampleId.getText();
