@@ -13,6 +13,14 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
+
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.*;
+
 /**
  *
  * @author JD
@@ -235,16 +243,46 @@ public class HospitalGUI extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
+       
         String userID = jTextField1.getText();
+        // userID validation
+        String samplepattern = "[^a-zA-Z0-9]";
+        Pattern r = Pattern.compile(samplepattern);
+        Matcher m = r.matcher(userID);
+        if (m.find()) {
+            JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
+        }
+        
         String first = firstName.getText();
+        
         String last = lastName.getText();
+        
         String department = dept.getText();
+        
         String sample = sampleId.getText();
+        //sampleID validation
+        String samplepattern1 = "[^a-zA-Z0-9]";
+        Pattern p = Pattern.compile(samplepattern1);
+        Matcher n = p.matcher(sample);
+        if (m.find()) {
+            JOptionPane.showMessageDialog(null, "Please enter alphanumeric characters only");
+        }
+
         String emailAdress = emailAddress.getText();
+        try {
+           InternetAddress emailAddr = new InternetAddress(emailAdress);
+           emailAddr.validate();
+        } 
+        catch (AddressException ex) {
+           System.out.println(ex);
+           JOptionPane.showMessageDialog(null, "Please enter valid email address");
+        }
         if (signOut.isSelected()){
             int value = 1;
+            sendMail(emailAdress, "this is the subject line saying you've signed out a sample", "this is the specific message in the email");
         } else {
             int value = 0;
+            sendMail(emailAdress, "this is the subject line saying you've returned the sample", "this is the specific message in the email");
         }
         
         try {
@@ -333,6 +371,40 @@ public class HospitalGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+     
+    public void sendMail(String userEmail, String subject, String mesage) {    
+        // Recipient's email ID needs to be mentioned.   
+        String to = userEmail;
+        // Sender's email ID needs to be mentioned
+        String from = "web@gmail.com";  //Affia's email or what not
+        // Assuming you are sending email from localhost
+        String host = "localhost";    //email will be sent from local machine
+        // Get system properties
+        Properties properties = System.getProperties();
+        // Setup mail server
+        properties.setProperty("mail.smtp.host", host);
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties);
+
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            // Set Subject: header field
+            message.setSubject(subject);  
+            // Now set the actual message
+            message.setText(mesage);
+            // Send message
+            Transport.send(message);
+            System.out.println("Sent message successfully");
+        }
+        catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
