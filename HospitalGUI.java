@@ -341,7 +341,7 @@ public class HospitalGUI extends javax.swing.JFrame {
             try {
                 PreparedStatement pdt = conn.prepareStatement("INSERT INTO client_id(user_id, first_name, last_name, email, department) VALUES(?,?,?,?,?)");
                 PreparedStatement pdt2 = conn.prepareStatement("INSERT INTO barcode_id (barcode_id) VALUES (?)");
-                PreparedStatement pdt3 = conn.prepareStatement("INSERT INTO main_table (sample_out, user_id, barcode_id) VALUES (?,?,?)");
+                PreparedStatement pdt3 = conn.prepareStatement("INSERT INTO main_table (sample_out, user_id, barcode_id) VALUES (?,?,?) where user_id = client_id.user_id AND barcode_id = barcode_id.barcode_id");
                 pdt.setString(1, userID);
                 pdt.setString(2, first);
                 pdt.setString(3, last);
